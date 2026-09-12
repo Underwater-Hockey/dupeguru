@@ -136,6 +136,19 @@ def test_remove_crit_from_list(app):
 
 
 @with_app(app_normal_results)
+def test_remove_crit_adjusts_selection(app):
+    # Removing the last criterion of the list doesn't leave an out of range index in the list's
+    # selection, which was making the view crash when it refreshed itself.
+    app.add_pri_criterion("Kind", 0)
+    app.add_pri_criterion("Kind", 1)
+    prilist = app.pdialog.prioritization_list
+    prilist.select(1)
+    prilist.remove_selected()
+    eq_(prilist[:], ["Kind (ext1)"])
+    eq_(prilist.selected_indexes, [0])
+
+
+@with_app(app_normal_results)
 def test_add_crit_without_selection(app):
     # Adding a criterion without having made a selection doesn't cause a crash.
     app.pdialog.add_selected()  # no crash

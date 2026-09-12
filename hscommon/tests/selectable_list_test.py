@@ -27,6 +27,14 @@ def test_selection_range():
     eq_(sl.selected_index, 1)
 
 
+def test_selection_range_on_slice_assignment():
+    # selection is correctly adjusted when a slice assignment shrinks the list
+    sl = SelectableList(["foo", "bar", "baz"])
+    sl.selected_index = 2
+    sl[:] = ["foo"]
+    eq_(sl.selected_index, 0)
+
+
 def test_update_selection_called():
     # _update_selection_is called after a change in selection. However, we only do so on select()
     # calls. I follow the old behavior of the Table class. At the moment, I don't quite remember
