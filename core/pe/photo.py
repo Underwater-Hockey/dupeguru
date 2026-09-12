@@ -37,14 +37,16 @@ class Photo(fs.File):
     def _plat_get_blocks(self, block_count_per_side, orientation):
         raise NotImplementedError()
 
-    def get_orientation(self):
+    def get_orientation(self) -> int:
         if not hasattr(self, "_cached_orientation"):
             try:
                 with self.path.open("rb") as fp:
                     exifdata = exif.get_fields(fp)
                     # the value is a list (probably one-sized) of ints
                     orientations = exifdata["Orientation"]
-                    self._cached_orientation = orientations[0]
+                    # EXIF only defines orientations 1 to 8 and we use "orientation - 1" as an
+                    # index in a list of 8 elements, so treat anything else as no orientation.
+                    self._cached_orientation = orientations[0] if 1 <= orientations[0] <= 8 else 0
             except Exception:  # Couldn't read EXIF data, no transforms
                 self._cached_orientation = 0
         return self._cached_orientation
