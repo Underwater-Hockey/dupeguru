@@ -14,6 +14,12 @@ only.
 
 A `Co-Authored-By:` trailer and the public https://claude.com/claude-code link are fine.
 
+## Picking issues to work on
+
+When choosing an upstream issue to work on, skip the ones labelled `beginner`. Upstream keeps that
+label for people who want to start contributing to dupeGuru, and taking those issues takes the
+on-ramp away from them. Pick from the unlabelled and `bug` issues instead.
+
 ## Contribution branches
 
 Cut branches meant for an upstream pull request from upstream `master` rather than from this fork's
