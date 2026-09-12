@@ -122,6 +122,9 @@ class SelectableList(MutableSequence, Selectable):
 
     def __setitem__(self, key, value):
         self._items.__setitem__(key, value)
+        # Assigning to a slice can shrink the list, so the selection has to be re-checked before
+        # the view is notified, otherwise the view refreshes with out of range selected indexes.
+        self._check_selection_range()
         self._on_change()
 
     # --- Override
